@@ -16,13 +16,13 @@ Google Sheet Storage: The final decision and candidate information are stored in
 
 
 ## Building the Workflow in n8n
-Webhook Node: set up a webhook in n8n to receive CVs from the front-end website.
-Google AI Studio for Front-end Development: -
-Extracting Data from PDF: An "Extract From File" node is used to pull textual information from the uploaded PDF resumes.
-AI Agent Node: An AI Agent node is configured to analyze the extracted resume data.
+Webhook Node: set up a webhook in n8n to receive CVs from the front-end website.  
+Google AI Studio for Front-end Development: -  
+Extracting Data from PDF: An Extract From File node is used to pull textual information from the uploaded PDF resumes.  
+AI Agent Node: An AI Agent node is configured to analyze the extracted resume data.  
 System Message (Prompt Engineering): A detailed system message is provided to the AI agent, outlining
-strict professional criteria for selection and rejection, as well as the desired output format.
-Google Sheet Integration: A "Google Sheet" node is used to append the analyzed candidate data (decision, name, contact details, experience, final opinion) to a Google Sheet.
+strict professional criteria for selection and rejection, as well as the desired output format.  
+Google Sheet Integration: A Google Sheet node is used to append the analyzed candidate data (decision, name, contact details, experience, final opinion) to a Google Sheet.
 
 <img width="1366" height="607" alt="Screenshot 2026-02-27 093034" src="https://github.com/user-attachments/assets/821f04ed-e0f1-41c3-846e-22001a4047e2" />
 
