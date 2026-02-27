@@ -1,0 +1,260 @@
+{
+  "name": "AI hiring manager",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9a580f16-b7da-4742-a87b-c358891a8d81",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -160,
+        16
+      ],
+      "id": "5982461a-1875-4fbb-b263-822ab262df3c",
+      "name": "Webhook",
+      "webhookId": "9a580f16-b7da-4742-a87b-c358891a8d81"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "cv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        48,
+        16
+      ],
+      "id": "1263a577-e9f7-4c5f-854f-994f5cb3247a",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=cv:  {{ $json.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "AI Agent Prompt:-\nRole: You are an AI recruiter for a fast-growing digital marketing agency. Your job is to evaluate Digital Marketing candidate CVs and decide whether to SELECT or REJECT them based on strict professional criteria.\nSelection Criteria (Must demonstrate):\n✅ Strong measurable achievements (KPIs like leads generated, traffic growth, engagement %, conversion rate, ROAS, CTR, SEO ranking improvements)\n✅ Practical experience with paid ads (Facebook Ads, Instagram Ads, Google Ads) and campaign optimization\n✅ Experience with SEO including keyword research, on-page SEO, link building, and reporting\n✅ Experience managing multiple platforms (Instagram, Facebook, YouTube, Pinterest, etc.)\n✅ WordPress website designing/management and content strategy experience\n✅ Clear proof of project work, portfolio links, website/blog links\n✅ Professional summary and structured CV format\n✅ Tools knowledge (Google Analytics, Search Console, Meta Ads Manager, Canva, SEM tools)\n\nRejection Criteria (Reject if):\n❌ CV is generic and contains only responsibilities with no achievements\n❌ No numbers, metrics, or results mentioned\n❌ No proof of ads performance or SEO results\n❌ No project links or portfolio evidence\n❌ Poor formatting, incomplete information, or unclear experience\n❌ Candidate only says \"I want to learn\" without showing practical work\n\nOutput Format (Strict):\nFor each CV, return the following structured response:\nDecision: [Selected / Rejected]\nName: [Candidate’s full name]\nMobile Number: [Candidate’s phone number]\nEmail Address: [Candidate’s email]\nExperience: [Total years of relevant experience]\nFinal Opinion: [1-2 line clear reason why selected or rejected, mention KPIs/tools/projects]\n\nImportant Rule:\nIf the CV shows measurable results, tools usage, and real projects → SELECT.\nIf the CV is generic and lacks proof/metrics → REJECT."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        16
+      ],
+      "id": "cd2150bc-ee91-4b67-8098-f15f0d372a64",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        112,
+        224
+      ],
+      "id": "2058372e-5dc8-471a-89f6-c280681e5dec",
+      "name": "Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YxVexiEZgdm2oteW",
+          "name": "anusha"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"decision\": \"Selected or Rejected\",\n  \"name\": \"Candidate full name\",\n  \"mobile_number\": \"Candidate phone number\",\n  \"email_address\": \"Candidate email\",\n  \"experience\": \"Total relevant experience\",\n  \"opinion\": \"2-3 lines HR explanation why selected or rejected\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        240
+      ],
+      "id": "8a87ce34-1abf-4ab0-8065-e99acd054c60",
+      "name": "Output format"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "17A5JZP7cne_x4e7jTNfLz5gQpyNgZuWcdXhYOuxLHSo",
+          "mode": "list",
+          "cachedResultName": "Candidates Information",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17A5JZP7cne_x4e7jTNfLz5gQpyNgZuWcdXhYOuxLHSo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1944119234,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17A5JZP7cne_x4e7jTNfLz5gQpyNgZuWcdXhYOuxLHSo/edit#gid=1944119234"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Decision": "={{ $json.output.Decision }}",
+            "Name": "={{ $json.output.Name }}",
+            "Mobile Number": "={{ $json.output['Mobile Number'] }}",
+            "Email Address": "={{ $json.output['Email Address'] }}",
+            "Experience": "={{ $json.output.Experience }}",
+            "Final Opinion": "={{ $json.output['Final Opinion'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Decision",
+              "displayName": "Decision",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mobile Number",
+              "displayName": "Mobile Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Address",
+              "displayName": "Email Address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Experience",
+              "displayName": "Experience",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Final Opinion",
+              "displayName": "Final Opinion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        16
+      ],
+      "id": "ae73d39e-8914-4719-b1a5-e9885419dbaa",
+      "name": "Google sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "IUiXREkxWP1hdYpk",
+          "name": "anusha"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Google sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output format": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b94087c4-611e-4e22-a305-b2e42c64ab5b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b565c8860c37b87e95e084dd999dd4e20b2b03bf07b6c5900ac88e5a01bc2f04"
+  },
+  "id": "7moRDGCwrt1K9Fd6",
+  "tags": []
+}
