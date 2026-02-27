@@ -12,7 +12,8 @@ User Upload CV: Candidates upload their CVs through a custom-built website.
 n8n Processing: The CV is sent to n8n, which uses an AI model to process the information.  
 Google Sheet Storage: The final decision and candidate information are stored in a Google Sheet.
 
-<img width="1366" height="590" alt="Screenshot 2026-02-27 072234" src="https://github.com/user-attachments/assets/626dae4c-0160-495a-b1b5-949f0ed28fa3" />
+<img width="1366" height="591" alt="Screenshot 2026-02-27 094327" src="https://github.com/user-attachments/assets/0551c66a-6649-4ea6-983e-8c66845283f8" />
+
 
 
 ## Building the Workflow in n8n
