@@ -8,8 +8,8 @@ The proposed solution involves a system where users upload CVs to a website, whi
 An AI agent within n8n reads, analyzes the resume, and saves the final decision (selected/rejected) and feedback into a Google Sheet.
 
 ## System Architecture 
-User Upload CV: Candidates upload their CVs through a custom-built website.
-n8n Processing: The CV is sent to n8n, which uses an AI model to process the information.
+User Upload CV: Candidates upload their CVs through a custom-built website.  
+n8n Processing: The CV is sent to n8n, which uses an AI model to process the information.  
 Google Sheet Storage: The final decision and candidate information are stored in a Google Sheet.
 
 <img width="1366" height="590" alt="Screenshot 2026-02-27 072234" src="https://github.com/user-attachments/assets/626dae4c-0160-495a-b1b5-949f0ed28fa3" />
